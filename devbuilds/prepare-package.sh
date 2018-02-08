@@ -22,6 +22,11 @@ if ! type grunt > /dev/null; then
   echo "${Red}* npm install -g grunt-cli${CloseColor}"
   exit
 fi
+if ! type penv > /dev/null; then
+  echo "${Red}* ERROR. Please install penv${CloseColor}"
+  echo "${Red}* npm install -g penv${CloseColor}"
+  exit
+fi
 
 Sqlite3Path='./node_modules/sqlite3/lib/binding'
 
@@ -36,6 +41,12 @@ elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
     PackagePath='../byteballbuilds/Dagcoin/linux64/'
     Action=linux64:live
   fi
+fi
+
+if [ "$1" == "testnet" ]; then
+  penv testnet
+else
+  penv base
 fi
 
 grunt desktop:$1
