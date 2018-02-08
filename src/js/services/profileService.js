@@ -618,9 +618,8 @@
 
     root.unlockFC = function (error, cb) {
       $log.debug('Wallet is encrypted');
-      $rootScope.$emit('Local/NeedsPassword', false, error, (err2, password, cbForUnlock) => {
+      $rootScope.$emit('Local/NeedsPassword', false, error, (err2, password) => {
         if (err2 && !password) {
-          try { cbForUnlock(false); } catch (ex) { $log.error(ex); }
           return cb({
             message: (gettextCatalog.getString('Password needed')),
           });
@@ -630,10 +629,8 @@
           try {
             fc.unlock(password);
             breadcrumbs.add(`unlocked ${fc.credentials.walletId}`);
-            try { cbForUnlock(true); } catch (ex) { $log.error(ex); }
           } catch (e) {
             $log.debug(e);
-            try { cbForUnlock(false); } catch (ex) { $log.error(ex); }
             return cb({
               message: (gettextCatalog.getString('Wrong password')),
             });
