@@ -71,6 +71,7 @@
                   <div class="price_digits">
                     <div class="price_digits_wrapper">
                                             <span class="price-number"
+                                                  ng-if="!index.needUnlock || index.needUnlock.success === true"
                                                   ng-style="home.getFontSizeForWalletNumber(index.dagBalance.totalStr)">{{index.dagBalance.totalStr.split('.')[0]}}</span><span class="price-separator">.</span>
                       <span class="price-sup"
                             ng-style="home.getFontSizeForWalletNumber(index.dagBalance.totalStr, 'sup')">{{index.dagBalance.totalStr.split('.')[1]}}</span>
@@ -130,7 +131,8 @@
           <span translate>No transactions yet</span>
         </div>
 
-        <div class="dag_transactions" ng-show="index.txHistory[0] && !index.updatingTxHistory">
+        <div class="dag_transactions" ng-show="index.txHistory[0] && !index.updatingTxHistory"
+             ng-if="!index.needUnlock || index.needUnlock.success === true">
           <div class="dag_transactions_list">
             <div class="dag_transactions_list_triggers">
               <h4 translate>Transactions History</h4>
