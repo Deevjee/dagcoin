@@ -246,6 +246,9 @@
             if (normalized.indexOf('.') >= 0) {
               normalized = normalized.substring(0, normalized.indexOf('.') + 7);
             }
+            if (normalized.charAt(normalized.length - 1) === '.') {
+              normalized = normalized.substring(0, normalized.length - 2);
+            }
             ctrl.$setViewValue(normalized);
             ctrl.$render();
           }
