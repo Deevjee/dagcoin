@@ -74,7 +74,7 @@
           }
         });
 
-        const disableMerchantPaymentRequestListener = $rootScope.$on('merchantPaymentRequest', (event, address, amount, invoiceId, validForSeconds) => {
+        const disableMerchantPaymentRequestListener = $rootScope.$on('merchantPaymentRequest', (event, address, amount, invoiceId, validForSeconds, merchantName) => {
           console.log(`paymentRequest event ${address}, ${amount}`);
           $rootScope.$emit('Local/SetTab', 'send');
           this.invoiceId = invoiceId;

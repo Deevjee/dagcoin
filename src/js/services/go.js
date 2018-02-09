@@ -133,9 +133,11 @@
       function handleUri(uri) {
         console.log(`handleUri ${uri}`);
 
-        if (!processMerchantPaymentRequestQrCode(uri)) {
-          processGenericPaymentRequestQrCode(uri);
-        }
+        processMerchantPaymentRequestQrCode(uri).then((wasMerchantPayment) => {
+          if (!wasMerchantPayment) {
+            processGenericPaymentRequestQrCode(uri);
+          }
+        });
       }
 
       function processMerchantPaymentRequestQrCode(uri) {
@@ -173,7 +175,8 @@
                 payload.walletAddress,
                 payload.coinAmount * 1000 * 1000,
                 payload.id,
-                payload.validForSeconds
+                payload.validForSeconds,
+                payload.merchantName
               );
             } catch (ex) {
               console.log(`error: ${ex}`); // Print the error if one occurred
