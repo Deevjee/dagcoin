@@ -163,6 +163,7 @@
             require('byteballcore/wallet.js');
             const device = require('byteballcore/device.js');
             const config = configService.getSync();
+            config.touchIdFor = config.touchIdFor || {};
             const firstWc = root.walletClients[lodash.keys(root.walletClients)[0]];
             if (root.profile.xPrivKeyEncrypted) {
               console.log('priv key is encrypted, will wait for UI and request password');
