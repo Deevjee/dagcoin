@@ -69,12 +69,15 @@
                     <use xlink:href="img/svg/symbol-defs.svg#icon-d"></use>
                   </svg>
                   <div class="price_digits">
-                    <div class="price_digits_wrapper">
-                                            <span class="price-number"
-                                                  ng-if="!index.needsUnlock || index.needsUnlock.success === true"
-                                                  ng-style="home.getFontSizeForWalletNumber(index.dagBalance.totalStr)">{{index.dagBalance.totalStr.split('.')[0]}}</span><span class="price-separator">.</span>
+                    <div class="price_digits_wrapper" ng-if="!index.needsUnlock || index.needsUnlock.success === true">
+                      <span class="price-number"
+                            ng-style="home.getFontSizeForWalletNumber(index.dagBalance.totalStr)">
+                        {{index.dagBalance.totalStr.split('.')[0]}}</span><span class="price-separator">.
+                      </span>
                       <span class="price-sup"
-                            ng-style="home.getFontSizeForWalletNumber(index.dagBalance.totalStr, 'sup')">{{index.dagBalance.totalStr.split('.')[1]}}</span>
+                            ng-style="home.getFontSizeForWalletNumber(index.dagBalance.totalStr, 'sup')">
+                        {{index.dagBalance.totalStr.split('.')[1]}}
+                      </span>
                     </div>
                   </div>
                 </div>
