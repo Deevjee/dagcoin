@@ -2,7 +2,7 @@
 
 'use strict';
 
-angular.module('copayApp.services').factory('fingerprintService', ($log, gettextCatalog, configService, isCordova, isMobile, FingerprintAuth) => {
+angular.module('copayApp.services').factory('fingerprintService', ($log, gettextCatalog, configService, isCordova, isMobile) => {
   const root = {};
 
   let _isAvailable = false;
