@@ -217,8 +217,7 @@
 
           const ModalInstanceCtrl = function ($scope, $modalInstance) {
             $scope.wallets = wallets;
-            $scope.editAddressbook = false;
-            $scope.addAddressbookEntry = false;
+            $scope.isMultiWallet = wallets.length > 0;
             $scope.selectedAddressbook = {};
             $scope.newAddress = address;
             $scope.addressbook = {
@@ -229,46 +228,12 @@
             $scope.bAllowAddressbook = self.canSendExternalPayment();
             $scope.selectedWalletsOpt = !!(wallets[0] || !$scope.bAllowAddressbook);
 
-            $scope.beforeQrCodeScann = () => {
-              $scope.error = null;
-              $scope.addAddressbookEntry = true;
-              $scope.editAddressbook = false;
-            };
-
-            $scope.onQrCodeScanned = (data, addressbookForm) => {
-              $timeout(() => {
-                const form = addressbookForm;
-                if (data && form) {
-                  const scannedCode = data.replace(`${self.protocol}:`, '');
-                  form.address.$setViewValue(scannedCode);
-                  form.address.$isValid = true;
-                  form.address.$render();
-                }
-                $scope.$digest();
-              }, 100);
-            };
-
             $scope.selectAddressbook = function (addr) {
               $modalInstance.close(addr);
             };
 
-            $scope.toggleEditAddressbook = function () {
-              $scope.editAddressbook = !$scope.editAddressbook;
-              $scope.selectedAddressbook = {};
-              $scope.addAddressbookEntry = false;
-            };
-
-            $scope.toggleSelectAddressbook = function (addr) {
-              $scope.selectedAddressbook[addr] = !$scope.selectedAddressbook[addr];
-            };
-
-            $scope.toggleAddAddressbookEntry = function () {
-              $scope.error = null;
-              $scope.addressbook = {
-                address: ($scope.newAddress || ''),
-                label: '',
-              };
-              $scope.addAddressbookEntry = !$scope.addAddressbookEntry;
+            $scope.setWalletsOpt = function () {
+              $scope.selectedWalletsOpt = !$scope.selectedWalletsOpt;
             };
 
             $scope.listEntries = function () {
@@ -292,46 +257,13 @@
               }
             });
 
-            $scope.add = function (addressbook) {
-              $scope.error = null;
-              $timeout(() => {
-                if (addressbookService.add(addressbook)) {
-                  addressbookService.list((ab) => {
-                    $rootScope.$emit('Local/AddressbookUpdated', ab);
-                    $scope.list = ab;
-                    $scope.editAddressbook = true;
-                    $scope.toggleEditAddressbook();
-                    $scope.$digest();
-                  });
-                }
-              }, 100);
-            };
-
-            $scope.remove = function (addr) {
-              $scope.error = null;
-              $timeout(() => {
-                if (addressbookService.remove(addr)) {
-                  addressbookService.list((ab) => {
-                    $rootScope.$emit('Local/AddressbookUpdated', ab);
-                    $scope.list = ab;
-                    $scope.$digest();
-                  });
-                }
-              }, 100);
-            };
-
             $scope.cancel = function () {
               breadcrumbs.add('openDestinationAddressModal cancel');
               $modalInstance.dismiss('cancel');
             };
 
             $scope.selectWallet = function (walletId, walletName) {
-              // $scope.gettingAddress = true; // this caused a weird hang under
-              // cordova if used after pulling "..." drop-up menu in chat
               $scope.selectedWalletName = walletName;
-              // $timeout(function() { // seems useless
-              //  $scope.$apply();
-              // });
               addressService.getAddress(walletId, false, (err, addr) => {
                 $scope.gettingAddress = false;
 
