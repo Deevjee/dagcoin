@@ -1,8 +1,9 @@
-<div class="backup" ng-if="index.needsBackup" ng-click="index.openBackupNeededModal()">
+<div class="backup" ng-if="(!index.needsUnlock || index.needsUnlock.success === true) && index.needsBackup"
+     ng-click="index.openBackupNeededModal()">
   <span translate>Wallet seed not backed up</span>
 </div>
 
-<dag-nav-bar title="{{index.alias ? index.alias : index.walletName}}">
+<dag-nav-bar title="{{index.alias ? index.alias : index.walletName}}" ng-show="!index.needsUnlock || index.needsUnlock.success === true">
   <qr-scanner ng-if="tab === 'send' && index.isComplete"
               on-scan="index.onQrCodeScanned(data)">
   </qr-scanner>
