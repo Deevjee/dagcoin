@@ -26,11 +26,16 @@
                    ng-show="editContact.email.$touched && editContact.email.$invalid" translate>E-mail not valid</div>
             </div>
 
-            <div class="input-wrap">
-                <label for="description">{{ 'Description' | translate}}</label>
-                <textarea name="description" id="description" ng-model="contact.data.description" cols="30"
-                          rows="10"></textarea>
-            </div>
+      <div class="input-wrap">
+        <label for="description">{{ 'Description' | translate}}</label>
+        <textarea name="description" id="description" ng-model="contact.description"
+                  cols="30" rows="4" ng-maxlength="contact.maxLengthOfContact"
+                  ng-class="{'shake error' : editContact.description.$touched && editContact.description.$invalid}">
+        </textarea>
+        <div class="has-error" ng-show="editContact.description.$touched && editContact.description.$invalid" translate>
+          Field is too long
+        </div>
+      </div>
 
             <div class="contact_form_button_div">
                 <button class="btn btn_red btn_red-full" ng-disabled="editContact.$invalid" type="submit">{{ 'Save' |

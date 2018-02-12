@@ -8,7 +8,9 @@
   EditContactController.$inject = ['$stateParams', 'addressbookService', '$state'];
 
   function EditContactController($stateParams, addressbookService, $state) {
+    const MAX_LENGTH_OF_DESCRIPTION = 500;
     const contact = this;
+    contact.maxLengthOfContact = MAX_LENGTH_OF_DESCRIPTION;
     contact.data = {};
     const contactData = addressbookService.getContact($stateParams.address) || {};
 
@@ -16,7 +18,9 @@
       contact.data[key] = contactData[key];
       return true;
     });
-
+    contact.description = contact.description || '';
+    const descriptionLength = contact.description.length;
+    contact.maxLengthOfContact = MAX_LENGTH_OF_DESCRIPTION < descriptionLength ? descriptionLength : MAX_LENGTH_OF_DESCRIPTION;
     contact.backParams = { address: $stateParams.address };
 
     contact.update = () => {
