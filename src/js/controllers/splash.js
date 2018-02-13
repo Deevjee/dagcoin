@@ -57,10 +57,15 @@
           if (err) {
             throw Error(`failed to write conf.json: ${err}`);
           }
+
+          // removed because if wallet type is not light this part of code never runs
+          /*
           const conf = require('byteballcore/conf.js');
           if (!conf.bLight) {
             throw Error('Failed to switch to light, please restart the app');
           }
+          */
+
           if (cb) {
             cb();
           } else {
