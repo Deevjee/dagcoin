@@ -1656,7 +1656,11 @@ no-nested-ternary,no-shadow,no-plusplus,consistent-return,import/no-extraneous-d
 
         $rootScope.$on('Local/NeedsPassword', (event, isSetup, errorMessage, cb) => {
           console.log('NeedsPassword');
-          self.needsUnlock = {};
+
+          // needsUnlock used for controlling initial display of wallet information in case of enabled password protection
+          if (!self.needsUnlock) {
+            self.needsUnlock = {};
+          }
           self.askPassword = {
             isSetup,
             error: errorMessage,
