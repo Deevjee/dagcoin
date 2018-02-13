@@ -9,6 +9,7 @@
 
   function NewContactController(addressbookService, $state, gettextCatalog) {
     const contact = this;
+    contact.data = {};
 
     contact.onQrCodeScanned = (uri) => {
       contact.address_error = '';
@@ -24,7 +25,6 @@
           }
         },
         ifOk(objRequest) {
-          console.log(`request: ${JSON.stringify(objRequest)}`);
           contact.address_error = '';
           contact.data.address = objRequest.address;
         },
