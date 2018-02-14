@@ -12,18 +12,14 @@
 
     contacts.toggleFavorite = (contact) => {
       contact.favorite = !contact.favorite;
-
-      if (addressbookService.update(contact)) {
-        if (contact.favorite) {
+      addressbookService.update(contact, (error, record) => {
+        if (record.favorite) {
           contacts.favoriteListTotal += 1;
         } else {
           contacts.favoriteListTotal -= 1;
         }
-
         loadList();
-      } else {
-        contact.favorite = !contact.favorite;
-      }
+      });
     };
 
     contacts.activeTabIndex = 0;

@@ -16,8 +16,7 @@
       favorites,
       add,
       update,
-      remove,
-      removeAll
+      remove
     };
 
     function addressBookKey() {
@@ -43,26 +42,27 @@
      */
     function list(cb) {
       if (!contacts) {
-        const ab = storageService.get(addressBookKey());
-        if (ab) {
-          const json = JSON.parse(ab);
-          contacts = {};
+        storageService.get(addressBookKey(), (error, contactList) => {
+          if (contactList) {
+            const json = JSON.parse(contactList);
+            contacts = {};
 
-          Object.keys(json).map((address) => {
-            if (typeof json[address] === 'string') {
-              contacts[address] = {
-                address,
-                first_name: json[address].split(' ')[0],
-                last_name: json[address].split(' ')[1]
-              };
-            } else if (json[address].first_name) {
-              contacts[address] = json[address];
-            }
-            return true;
-          });
-        } else {
-          contacts = {};
-        }
+            Object.keys(json).map((address) => {
+              if (typeof json[address] === 'string') {
+                contacts[address] = {
+                  address,
+                  first_name: json[address].split(' ')[0],
+                  last_name: json[address].split(' ')[1]
+                };
+              } else if (json[address].first_name) {
+                contacts[address] = json[address];
+              }
+              return true;
+            });
+          } else {
+            contacts = {};
+          }
+        });
       }
       return cb(contacts);
     }
@@ -91,37 +91,28 @@
      * Add a new entry to existing contacts
      * @returns boolean
      */
-    function add(entry) {
+    function add(entry, cb) {
       return list(() => {
         contacts[entry.address] = entry;
-        return storageService.set(addressBookKey(), JSON.stringify(contacts));
+        storageService.set(addressBookKey(), JSON.stringify(contacts), cb);
       });
     }
 
-    function update(entry, force = false) {
+    function update(entry, cb) {
       return list(() => {
-        if (force) {
-          contacts[entry.address] = entry;
-        } else {
-          Object.keys(entry).map((key) => {
-            contacts[entry.address][key] = entry[key];
-            return true;
-          });
-        }
-        return storageService.set(addressBookKey(), JSON.stringify(contacts));
+        Object.keys(entry).map((key) => {
+          contacts[entry.address][key] = entry[key];
+          return true;
+        });
+        storageService.set(addressBookKey(), JSON.stringify(contacts), cb);
       });
     }
 
-    function remove(addr) {
+    function remove(addr, cb) {
       return list(() => {
         delete contacts[addr];
-        return storageService.set(addressBookKey(), JSON.stringify(contacts));
+        storageService.set(addressBookKey(), JSON.stringify(contacts), cb);
       });
-    }
-
-    function removeAll() {
-      contacts = {};
-      return storageService.remove(addressBookKey());
     }
   }
 })();

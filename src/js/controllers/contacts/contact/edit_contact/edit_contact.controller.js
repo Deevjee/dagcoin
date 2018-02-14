@@ -25,9 +25,12 @@
 
     contact.update = () => {
       console.log(contact.data);
-      if (addressbookService.update(contact.data)) {
-        $state.go('contact', contact.backParams);
-      }
+      addressbookService.update(contact.data, (error, record) => {
+        const exists = !!record;
+        if (exists) {
+          $state.go('contact', contact.backParams);
+        }
+      });
     };
   }
 })();

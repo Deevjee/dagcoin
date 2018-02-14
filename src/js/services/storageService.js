@@ -186,9 +186,16 @@
 
       root.accessor = (key, value) => (value ? root.set(key, value) : root.get(key));
 
-      root.set = (key, value) => storage.set(key, value, () => !!root.get(key));
+      root.set = (key, value, cb) => storage.set(key, value, () => !!root.get(key, cb));
 
-      root.get = key => storage.get(key, (err, value) => (value || false));
+      root.get = (key, cb) => {
+        storage.get(key, (err, value) => {
+          if (err) {
+            return cb(err);
+          }
+          return cb(null, value);
+        });
+      };
 
       root.remove = key => storage.remove(key, () => !root.get(key));
 

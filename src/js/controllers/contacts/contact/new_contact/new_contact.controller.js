@@ -38,10 +38,12 @@
         contact.address_error = gettextCatalog.getString('Wallet address is already assigned to another contact.');
         return false;
       }
-
-      if (addressbookService.add(contact.data)) {
-        return $state.go('contacts');
-      }
+      addressbookService.add(contact.data, (error, value) => {
+        const exists = !!value;
+        if (exists) {
+          $state.go('contacts');
+        }
+      });
     };
   }
 })();
